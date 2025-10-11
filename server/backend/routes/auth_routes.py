@@ -4,7 +4,7 @@ from core.utils.permissions import get_current_user
 from routes.base_routes import BaseRoutes # pyright: ignore[reportAttributeAccessIssue]
 from core.utils.register_router import register_router
 from controllers import AuthController # pyright: ignore[reportAttributeAccessIssue]
-from schemas import STokenWithRefresh, SUserAuth, SUserRegister, SUserTokenPayload, STokenRefresh  # pyright: ignore[reportAttributeAccessIssue]
+from schemas import STokenWithRefresh, SUserAuth, SUserRegister, SUserTokenPayload, STokenRefresh, SUserOut # pyright: ignore[reportAttributeAccessIssue]
 from core.db import get_session
 
 
@@ -26,6 +26,6 @@ class AuthRoutes(BaseRoutes):
         async def register_user(user: SUserRegister, session: AsyncSession = Depends(get_session)) -> STokenWithRefresh | None:
             return await AuthController(session=session).register_user(user)
 
-        @self.router.get('/me/', response_model=SUserTokenPayload | None, tags=[self.tag])
+        @self.router.get('/me/', response_model=SUserOut | None, tags=[self.tag])
         async def get_user_by_token( user: SUserTokenPayload = Depends(get_current_user), session: AsyncSession = Depends(get_session)) -> SUserTokenPayload | None:
             return await AuthController(session=session).get_me(user)
