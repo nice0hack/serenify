@@ -1,0 +1,57 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: fastapi-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - app_network
+    volumes:
+      - ./backend:/project
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    networks:
+      - app_network
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80" # Nginx доступен извне на порту 80
+    networks:
+      - app_network
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      # - ./backend/app/static:/app/static:ro
+    depends_on:
+      - backend
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - app_network
+    depends_on:
+      - db
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
