@@ -169,7 +169,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _registerPage(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
@@ -196,7 +196,7 @@ class _AuthPageState extends State<AuthPage> {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Добро пожаловать в KazMed! Удобный способ записаться к врачу, получать рекомендации и следить за своим здоровьем. Всё в одном месте — просто, быстро и надёжно.',
+                'Добро пожаловать в Serenify! Удобный способ записаться к врачу, получать рекомендации и следить за своим ментальным здоровьем. Всё в одном месте — просто, быстро и надёжно.',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey, fontSize: 14),
               ),

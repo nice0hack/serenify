@@ -6,8 +6,6 @@ import '../constants.dart';
 import '../secure_storage.dart';
 
 Future<bool> isAuth() async {
-  return false;
-
   final token = await storage.read(key: 'access_token');
 
   final res = await http.get(
