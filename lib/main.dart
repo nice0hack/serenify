@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'constants.dart';
+import 'navigation.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -17,7 +20,8 @@ class SerenifyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Serenify App',
+      title: Constants.appName,
+      home: SerenifyNavigation(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
@@ -35,8 +39,7 @@ class SerenifyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        //colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
-        brightness: Brightness.light,
+        colorScheme: ColorScheme.dark()
       ),
     );
   }
