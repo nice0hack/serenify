@@ -134,14 +134,14 @@ class _SerenifyNavigationState extends State<SerenifyNavigation> {
         if (snapshot.hasData) {
           final isAuth = snapshot.data!;
           if (isAuth) {
-            return PageLoader(loadingTime: 300000, page: mainContent(context));
+            return PageLoader(loadingTime: 4500, page: mainContent(context));
           }
           else {
-            return PageLoader(loadingTime: 300000, page: AuthPage(updateAuth: updateAuth));
+            return PageLoader(loadingTime: 4500, page: AuthPage(updateAuth: updateAuth));
           }
         }
 
-        return PageLoader();
+        return PageLoader(loadingTime: 4500);
       },
     );
   }
