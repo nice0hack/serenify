@@ -7,8 +7,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage>
-    with TickerProviderStateMixin {
+class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   String selectedDoctor = 'Др. Айжан Каримова';
 
   final List<Map<String, dynamic>> doctors = [
@@ -33,7 +32,7 @@ class _SearchPageState extends State<SearchPage>
       'name': 'Др. Наурыз Хайзенберг',
       'specialty': 'Психиатр',
       'experience': '5 лет',
-      'rating': 4.9,
+      'rating': 4.7,
       'price': '17 000 ₸ / сеанс',
       'clinic': 'Serenity Clinic',
       'address': 'ул. Толе би, 45, Алматы',
@@ -50,7 +49,7 @@ class _SearchPageState extends State<SearchPage>
       'name': 'Др. Гульмира Ким',
       'specialty': 'Невропсихолог',
       'experience': '10 лет',
-      'rating': 4.9,
+      'rating': 4.8,
       'price': '12 000 ₸ / сеанс',
       'clinic': 'Serenity Clinic',
       'address': 'ул. Абая, 125, Алматы',
@@ -84,10 +83,11 @@ class _SearchPageState extends State<SearchPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Dropdown выбора врача
                 Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF425397),
                     borderRadius: BorderRadius.circular(12),
@@ -108,7 +108,8 @@ class _SearchPageState extends State<SearchPage>
                         );
                       }).toList(),
                       onChanged: (value) {
-                        if (value != null) setState(() => selectedDoctor = value);
+                        if (value != null)
+                          setState(() => selectedDoctor = value);
                       },
                     ),
                   ),
@@ -125,7 +126,7 @@ class _SearchPageState extends State<SearchPage>
                         onTap: () {
                           setState(() {
                             expanded[doc['name']] =
-                            !(expanded[doc['name']] ?? false);
+                                !(expanded[doc['name']] ?? false);
                           });
                         },
                         child: AnimatedContainer(
@@ -134,10 +135,14 @@ class _SearchPageState extends State<SearchPage>
                           margin: const EdgeInsets.only(bottom: 12),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF425397).withValues(alpha: 0.3),
+                            color: const Color(
+                              0xFF425397,
+                            ).withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                                color: const Color(0xFF597AFF), width: 1),
+                              color: const Color(0xFF597AFF),
+                              width: 1,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withValues(alpha: 0.25),
@@ -156,14 +161,13 @@ class _SearchPageState extends State<SearchPage>
                                   children: [
                                     CircleAvatar(
                                       radius: 26,
-                                      backgroundImage:
-                                      AssetImage(doc['photo']),
+                                      backgroundImage: AssetImage(doc['photo']),
                                     ),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             doc['name'],
@@ -176,40 +180,54 @@ class _SearchPageState extends State<SearchPage>
                                           Text(
                                             doc['specialty'],
                                             style: const TextStyle(
-                                                color: Color(0xFFB8C0FF)),
+                                              color: Color(0xFFB8C0FF),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
                                     AnimatedRotation(
                                       turns: isExpanded ? 0.5 : 0,
-                                      duration:
-                                      const Duration(milliseconds: 300),
-                                      child: const Icon(Icons.expand_more,
-                                          color: Colors.white),
+                                      duration: const Duration(
+                                        milliseconds: 300,
+                                      ),
+                                      child: const Icon(
+                                        Icons.expand_more,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 8),
                                 Row(
                                   children: [
-                                    Text(doc['experience'],
-                                        style: const TextStyle(
-                                            color: Colors.white70)),
+                                    Text(
+                                      doc['experience'],
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                      ),
+                                    ),
                                     const SizedBox(width: 8),
-                                    const Icon(Icons.star,
-                                        color: Colors.amber, size: 16),
-                                    Text(doc['rating'].toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white70)),
+                                    const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                      size: 16,
+                                    ),
+                                    Text(
+                                      doc['rating'].toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                      ),
+                                    ),
                                     const SizedBox(width: 8),
-                                    Text(doc['price'],
-                                        style: const TextStyle(
-                                            color: Colors.white70)),
+                                    Text(
+                                      doc['price'],
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                      ),
+                                    ),
                                   ],
                                 ),
-
-                                // Раскрывающаяся часть
                                 AnimatedCrossFade(
                                   duration: const Duration(milliseconds: 400),
                                   firstChild: const SizedBox.shrink(),
@@ -217,52 +235,64 @@ class _SearchPageState extends State<SearchPage>
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           doc['clinic'],
                                           style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500),
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                         Text(
                                           doc['address'],
                                           style: const TextStyle(
-                                              color: Color(0xFFB8C0FF)),
+                                            color: Color(0xFFB8C0FF),
+                                          ),
                                         ),
                                         const SizedBox(height: 12),
                                         Container(
                                           decoration: BoxDecoration(
                                             color: const Color(0xFF384681),
-                                            borderRadius:
-                                            BorderRadius.circular(12),
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
                                           ),
                                           padding: const EdgeInsets.all(12),
                                           child: Column(
-                                            children: doc['schedule']
-                                                .entries
+                                            children: doc['schedule'].entries
                                                 .map<Widget>((entry) {
-                                              return Padding(
-                                                padding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 4),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    Text(entry.key,
-                                                        style: const TextStyle(
-                                                            color:
-                                                            Colors.white70)),
-                                                    Text(entry.value,
-                                                        style: const TextStyle(
-                                                            color:
-                                                            Colors.white70)),
-                                                  ],
-                                                ),
-                                              );
-                                            }).toList(),
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          vertical: 4,
+                                                        ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          entry.key,
+                                                          style:
+                                                              const TextStyle(
+                                                                color: Colors
+                                                                    .white70,
+                                                              ),
+                                                        ),
+                                                        Text(
+                                                          entry.value,
+                                                          style:
+                                                              const TextStyle(
+                                                                color: Colors
+                                                                    .white70,
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                })
+                                                .toList(),
                                           ),
                                         ),
                                         const SizedBox(height: 12),
@@ -271,22 +301,24 @@ class _SearchPageState extends State<SearchPage>
                                           child: ElevatedButton(
                                             onPressed: () {},
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                              const Color(0xFF597AFF),
-                                              shape:
-                                              RoundedRectangleBorder(
+                                              backgroundColor: const Color(
+                                                0xFF597AFF,
+                                              ),
+                                              shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                               ),
                                               padding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 12),
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 12,
+                                                  ),
                                             ),
                                             child: const Text(
                                               'Записаться',
                                               style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                             ),
                                           ),
                                         ),
