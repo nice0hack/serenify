@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../backend/auth.dart';
 
@@ -22,17 +23,21 @@ class _RoundedInputField extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
         filled: true,
-        fillColor: const Color(0xFFF3F5F9),
+        fillColor: const Color(0x10000000),
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.black45),
+        hintStyle: GoogleFonts.rubik(color: Color(0xFF8099FF)),
         suffixIcon: suffixIcon,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 14,
         ),
-        border: OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Color(0xFF8099FF), width: 2.5),
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Color(0xFF3F65FF), width: 2.5),
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
     );
@@ -57,19 +62,97 @@ class _AuthPageState extends State<AuthPage> {
   bool _agreeToTerms = false;
   bool _isAuth = true;
 
+  void _showDialog(String content) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/dialog_bg.png'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Ошибка',
+                  style: GoogleFonts.rubik(
+                    color: Color(0xFFFF8383),
+                    fontSize: 40,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  content,
+                  style: GoogleFonts.rubik(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Color(0xFF3F65FF),
+                    ),
+                    child: Text(
+                      'Закрыть',
+                      style: GoogleFonts.rubik(fontSize: 20),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _onLogin() async {
-    await login(_loginController.text, _passwordController.text);
-    widget.updateAuth();
+    String res = await login(_loginController.text, _passwordController.text);
+    if (res == 'ok') {
+      widget.updateAuth();
+    } else {
+      if (!mounted) return;
+
+      _loginController.clear();
+      _passwordController.clear();
+
+      _showDialog(res);
+    }
   }
 
   Future<void> _onRegister() async {
-    await register(
+    String res = await register(
       _loginController.text,
       _nameController.text,
       _emailController.text,
       _passwordController.text,
     );
-    widget.updateAuth();
+    if (res == 'ok') {
+      widget.updateAuth();
+    } else {
+      if (!mounted) return;
+
+      _loginController.clear();
+      _nameController.clear();
+      _emailController.clear();
+      _passwordController.clear();
+
+      _showDialog(res);
+    }
   }
 
   void _onTapSignUp() {
@@ -86,24 +169,32 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _loginPage(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: SafeArea(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/start_page_bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Icon(Icons.waving_hand, size: 80, color: Colors.amber),
-              const SizedBox(height: 20),
+              const SizedBox(height: 95),
+              Image.asset('assets/logo.png', width: 80, height: 80),
+              const SizedBox(height: 30),
               const Text(
                 'Авторизация',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF2046F7),
+                  color: Color(0xFF8099FF),
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 25),
               // Login
               _RoundedInputField(
                 controller: _loginController,
@@ -130,7 +221,7 @@ class _AuthPageState extends State<AuthPage> {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2046F7),
+                    backgroundColor: const Color(0xFF3F65FF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -153,7 +244,7 @@ class _AuthPageState extends State<AuthPage> {
                     child: const Text(
                       'Зарегистрируйтесь',
                       style: TextStyle(
-                        color: Color(0xFF2046F7),
+                        color: Color(0xFF3F65FF),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -169,36 +260,36 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _registerPage(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: SafeArea(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/start_page_bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 32),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8ECFF),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: const Text("👋", style: TextStyle(fontSize: 36)),
-              ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 55),
+              Image.asset('assets/logo.png', width: 80, height: 80),
+              const SizedBox(height: 30),
               const Text(
-                "Регистрация",
+                'Регистрация',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E2C62),
+                  color: Color(0xFF8099FF),
                 ),
               ),
               const SizedBox(height: 12),
-              const Text(
+              Text(
                 'Добро пожаловать в Serenify! Удобный способ записаться к врачу, получать рекомендации и следить за своим ментальным здоровьем. Всё в одном месте — просто, быстро и надёжно.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                style: GoogleFonts.rubik(color: Colors.grey, fontSize: 14),
               ),
               const SizedBox(height: 28),
               // Login
@@ -240,21 +331,30 @@ class _AuthPageState extends State<AuthPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
                     ),
+                    checkColor: Colors.white,
+                    fillColor: WidgetStateProperty.resolveWith<Color>((
+                      Set<WidgetState> states,
+                    ) {
+                      if (states.contains(WidgetState.selected)) {
+                        return Color(0xFF3F65FF);
+                      }
+                      return Colors.transparent;
+                    }),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Text.rich(
                       TextSpan(
                         text: "Я согласен с ",
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                        style: const TextStyle(color: Colors.grey, fontSize: 13),
                         children: [
                           TextSpan(
                             text: "условиями обслуживания",
-                            style: TextStyle(color: Colors.blue),
+                            style: GoogleFonts.rubik(color: const Color(0xFF3F65FF)),
                           ),
-                          TextSpan(text: " и "),
+                          const TextSpan(text: " и "),
                           TextSpan(
                             text: "приватной политикой",
-                            style: TextStyle(color: Colors.blue),
+                            style: GoogleFonts.rubik(color: const Color(0xFF3F65FF)),
                           ),
                         ],
                       ),
@@ -266,16 +366,29 @@ class _AuthPageState extends State<AuthPage> {
               // Create Account Button
               ElevatedButton(
                 onPressed: _agreeToTerms ? _onRegister : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3B5AFB),
-                  minimumSize: const Size(double.infinity, 54),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>((
+                    Set<WidgetState> states,
+                  ) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Color(0xFF323E6D);
+                    }
+                    return const Color(0xFF3F65FF);
+                  }),
+                  minimumSize: WidgetStateProperty.all<Size>(
+                    Size(double.infinity, 54),
+                  ),
+                  shape: WidgetStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   "Создать аккаунт",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: _agreeToTerms
+                      ? GoogleFonts.rubik(fontSize: 16, color: Color(0xFFA3B5FF))
+                      : GoogleFonts.rubik(fontSize: 16, color: Color(0xFF202741)),
                 ),
               ),
               const SizedBox(height: 24),
@@ -285,10 +398,10 @@ class _AuthPageState extends State<AuthPage> {
                   const Text('Вы уже имеете аккаунт? '),
                   GestureDetector(
                     onTap: _onTapSignIn,
-                    child: const Text(
+                    child: Text(
                       'Войти',
-                      style: TextStyle(
-                        color: Color(0xFF2046F7),
+                      style: GoogleFonts.rubik(
+                        color: Color(0xFF3F65FF),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

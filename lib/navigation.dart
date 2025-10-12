@@ -9,7 +9,7 @@ import 'pages/calendar.dart';
 import 'pages/home.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
-import 'widgets/page_loader.dart';
+import 'widgets/splash_screen.dart';
 
 class SerenifyNavigation extends StatefulWidget {
   const SerenifyNavigation({super.key});
@@ -75,23 +75,22 @@ class _SerenifyNavigationState extends State<SerenifyNavigation> {
             ],
           ),
           child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 8,
-              ),
+            child: Container(
+              color: Color(0xFFA4AED7),
+              padding: EdgeInsets.only(top: 1),
               child: GNav(
                 curve: Curves.easeOutExpo,
-                rippleColor: Colors.grey.shade300,
-                hoverColor: Colors.grey.shade100,
+                rippleColor: Color(0xFF8099FF),
+                hoverColor: Color(0xFF8099FF),
                 haptic: true,
                 tabBorderRadius: 20,
                 gap: 5,
                 activeColor: Colors.white,
+                backgroundColor: Color(0xFF0C1126),
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 duration: Duration(milliseconds: 400),
-                tabBackgroundColor: Colors.blue.withValues(alpha: 0.7),
-                textStyle: GoogleFonts.lato(color: Colors.white),
+                tabBackgroundColor: Color(0xFF3F65FF),
+                textStyle: GoogleFonts.rubik(color: Colors.white),
                 tabs: [
                   GButton(
                     iconSize: _selectedIndex != 0 ? 28 : 25,
@@ -134,14 +133,14 @@ class _SerenifyNavigationState extends State<SerenifyNavigation> {
         if (snapshot.hasData) {
           final isAuth = snapshot.data!;
           if (isAuth) {
-            return PageLoader(loadingTime: 4500, page: mainContent(context));
+            return SerenifySplashScreen(loadingTime: 4500, page: mainContent(context));
           }
           else {
-            return PageLoader(loadingTime: 4500, page: AuthPage(updateAuth: updateAuth));
+            return SerenifySplashScreen(loadingTime: 4500, page: AuthPage(updateAuth: updateAuth));
           }
         }
 
-        return PageLoader(loadingTime: 4500);
+        return SerenifySplashScreen(loadingTime: 4500);
       },
     );
   }

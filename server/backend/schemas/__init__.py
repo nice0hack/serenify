@@ -13,5 +13,5 @@ for module_info in pkgutil.iter_modules(__path__):
             globals()[attr] = getattr(module, attr)
             __all__.append(attr)
 
-# SClinicInServiceOut.model_rebuild()
-# SServicesInClinicOut.model_rebuild()
+SClinicInServiceOut.model_rebuild()
+SServicesInClinicOut.model_rebuild()

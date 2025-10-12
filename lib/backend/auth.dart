@@ -20,7 +20,7 @@ Future<bool> isAuth() async {
   }
 }
 
-Future<void> register(
+Future<String> register(
   String login,
   String name,
   String email,
@@ -40,13 +40,17 @@ Future<void> register(
     final data = jsonDecode(res.body);
     await storage.write(key: 'access_token', value: data['access_token']);
     await storage.write(key: 'refresh_token', value: data['refresh_token']);
+    return 'ok';
+  }
+  else if (res.statusCode == 422) {
+    return 'Неправильный формат почты';
   }
   else {
-    throw Exception('Failed to register: ${res.body}');
+    return jsonDecode(res.body)['detail'];
   }
 }
 
-Future<void> login(String login, String password) async {
+Future<String> login(String login, String password) async {
   final res = await http.post(
     Uri.parse('${Constants.apiBaseUrl}/auth/'),
     headers: {'Content-Type': 'application/json'},
@@ -56,7 +60,8 @@ Future<void> login(String login, String password) async {
     final data = jsonDecode(res.body);
     await storage.write(key: 'access_token', value: data['access_token']);
     await storage.write(key: 'refresh_token', value: data['refresh_token']);
+    return 'ok';
   } else {
-    throw Exception('Failed to login: ${res.body}');
+    return jsonDecode(res.body)['detail'];
   }
 }
