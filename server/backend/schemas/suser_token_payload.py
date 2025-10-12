@@ -12,7 +12,7 @@ class SUserTokenPayload(BaseModel):
         description="Уникальный идентификатор пользователя",
     )
     role: int = Field(...)
-    doctor_id: int | None = Field()
+    doctor_id: int | None = Field(None)
     exp: Optional[int] = Field(
         None, description="Время истечения токена (Unix timestamp)"
     )
