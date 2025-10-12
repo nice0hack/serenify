@@ -19,7 +19,7 @@ class DoctorsRoutes(BaseRoutes):
         async def create_doctor(
             doctor: str = Form(json_schema_extra=SDoctors.model_json_schema()),
             images: list[UploadFile] = [],
-            weekly_schedule: list[SScheduleEntry] = Form(json_schema_extra=SScheduleEntry.model_json_schema()),
+            weekly_schedule: str = Form(json_schema_extra=SScheduleEntry.model_json_schema()),
             exceptions_schedule: str | None = Form(None, json_schema_extra=SExceptionEntry.model_json_schema()),
             session: AsyncSession = Depends(get_session),
         ):
