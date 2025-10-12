@@ -66,7 +66,7 @@ class _HomePageState extends StatelessWidget {
                     height: 220,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/WaterBack.png'),
+                        image: AssetImage('assets/water_back.png'),
                       ),
                     ),
                   ),

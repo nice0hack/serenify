@@ -30,7 +30,7 @@ class SerenifyNavigation extends StatefulWidget {
 class _SerenifyNavigationState extends State<SerenifyNavigation> {
   final List<Widget> _pages = [
     HomePage(),
-    SearchPage(title: 'search'),
+    SearchPage(),
     CalendarPage(title: 'calendar'),
     ProfilePage(title: 'profile'),
   ];
