@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const HomePage());
-}
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,13 +19,12 @@ class _HomePageState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0E1632), // Темно-синий фон
+      backgroundColor: const Color(0xFF0E1632),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Верхняя панель
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -38,7 +34,7 @@ class _HomePageState extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Привет, Никита!",
+                      "Привет, Илья!",
                       style: TextStyle(
                         color: Color(0xFFBFD9FF),
                         fontSize: 18,
@@ -56,11 +52,9 @@ class _HomePageState extends StatelessWidget {
                 ),
               ),
 
-              // Заголовок с фоновым изображением
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // Фон с картинкой
                   Container(
                     width: 470,
                     height: 220,
@@ -71,7 +65,6 @@ class _HomePageState extends StatelessWidget {
                     ),
                   ),
 
-                  // Кнопка "Поиск" с вырезом снизу
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -94,20 +87,19 @@ class _HomePageState extends StatelessWidget {
                                 255,
                                 255,
                                 255,
-                              ).withOpacity(0.6),
+                              ).withValues(alpha: 0.6),
                               blurRadius: 8,
                               offset: const Offset(0, 1),
                             ),
                           ],
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "Поиск",
-                            style: TextStyle(
+                            style: GoogleFonts.rubik(
                               color: Colors.white,
                               fontSize: 23,
                               fontWeight: FontWeight.w500,
-                              fontFamily: "Times New Roman",
                             ),
                           ),
                         ),
@@ -118,7 +110,6 @@ class _HomePageState extends StatelessWidget {
               ),
               const SizedBox(height: 50),
 
-              // Раздел "Мы заботимся о вас"
               const Padding(
                 padding: EdgeInsets.only(left: 20, top: 24, bottom: 12),
                 child: Text(
@@ -132,23 +123,37 @@ class _HomePageState extends StatelessWidget {
               ),
 
               SizedBox(
-                height: 140,
+                height: 160,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  children: [
-                    _buildCareCard(Colors.blueAccent),
-                    _buildCareCard(Colors.greenAccent),
-                    _buildCareCard(Colors.redAccent),
+                  children: const [
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_1.png",
+                    ),
+                    SizedBox(width: 16),
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_2.png",
+                    ),
+                    SizedBox(width: 16),
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_3.png",
+                    ),
+                    SizedBox(width: 16),
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_4.png",
+                    ),
                   ],
                 ),
               ),
-
-              // Раздел "Они вам помогут"
               const Padding(
                 padding: EdgeInsets.only(left: 20, top: 24, bottom: 12),
                 child: Text(
-                  "Они вам не помогут",
+                  "Они вам помогут",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -156,36 +161,31 @@ class _HomePageState extends StatelessWidget {
                   ),
                 ),
               ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    _DoctorCard(
-                      color: Color(0xFF708FFF),
-                      icon: Icons.favorite,
-                      label: "Психотерапевт",
-                    ),
-                    _DoctorCard(
-                      color: Color(0xFFFF6B6B),
-                      icon: Icons.favorite,
-                      label: "Психолог",
-                    ),
-                  ],
-                ),
-              ),
-
-              // тестово чекнуть как работает листинг
               SizedBox(
-                height: 30,
+                height: 160,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  children: [
-                    _buildCareCard(Colors.blueAccent),
-                    _buildCareCard(Colors.greenAccent),
-                    _buildCareCard(Colors.redAccent),
+                  children: const [
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_1.png",
+                    ),
+                    SizedBox(width: 16),
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_2.png",
+                    ),
+                    SizedBox(width: 16),
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_3.png",
+                    ),
+                    SizedBox(width: 16),
+                    _DoctorCard(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                      imagePath: "assets/spec_4.png",
+                    ),
                   ],
                 ),
               ),
@@ -195,52 +195,41 @@ class _HomePageState extends StatelessWidget {
       ),
     );
   }
-
-  static Widget _buildCareCard(Color color) {
-    return Container(
-      width: 120,
-      margin: const EdgeInsets.only(right: 16),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(20),
-      ),
-    );
-  }
 }
 
 class _DoctorCard extends StatelessWidget {
   final Color color;
-  final IconData icon;
-  final String label;
+  final String imagePath;
+
 
   const _DoctorCard({
     required this.color,
-    required this.icon,
-    required this.label,
+    required this.imagePath,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 140,
-      height: 140,
+      width: 150,
+      height: 150,
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.white, size: 40),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              imagePath,
+              width: 140,
+              height: 140,
+              fit: BoxFit.cover,
             ),
           ),
+          const SizedBox(height: 8),
+
         ],
       ),
     );

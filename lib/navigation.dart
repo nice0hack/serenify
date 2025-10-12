@@ -31,8 +31,8 @@ class _SerenifyNavigationState extends State<SerenifyNavigation> {
   final List<Widget> _pages = [
     HomePage(),
     SearchPage(),
-    CalendarPage(title: 'calendar'),
-    ProfilePage(title: 'profile'),
+    CalendarPage(),
+    ProfilePage(),
   ];
 
   int _selectedIndex = 0;

@@ -2,72 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MeetingDataSource extends CalendarDataSource {
-  /// Creates a meeting data source, which used to set the appointment
-  /// collection to the calendar
   MeetingDataSource(List<Meeting> source) {
     appointments = source;
   }
 
   @override
-  DateTime getStartTime(int index) {
-    return _getMeetingData(index).from;
-  }
+  DateTime getStartTime(int index) =>
+      (appointments![index] as Meeting).from;
 
   @override
-  DateTime getEndTime(int index) {
-    return _getMeetingData(index).to;
-  }
+  DateTime getEndTime(int index) =>
+      (appointments![index] as Meeting).to;
 
   @override
-  String getSubject(int index) {
-    return _getMeetingData(index).eventName;
-  }
+  String getSubject(int index) =>
+      (appointments![index] as Meeting).eventName;
 
   @override
-  Color getColor(int index) {
-    return _getMeetingData(index).background;
-  }
+  Color getColor(int index) =>
+      (appointments![index] as Meeting).background;
 
   @override
-  bool isAllDay(int index) {
-    return _getMeetingData(index).isAllDay;
-  }
-
-  Meeting _getMeetingData(int index) {
-    final dynamic meeting = appointments![index];
-    late final Meeting meetingData;
-    if (meeting is Meeting) {
-      meetingData = meeting;
-    }
-
-    return meetingData;
-  }
+  bool isAllDay(int index) =>
+      (appointments![index] as Meeting).isAllDay;
 }
 
 class Meeting {
-  /// Creates a meeting class with required details.
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+  const Meeting(
+      this.eventName,
+      this.from,
+      this.to,
+      this.background,
+      this.isAllDay,
+      );
 
-  /// Event name which is equivalent to subject property of [Appointment].
-  String eventName;
-
-  /// From which is equivalent to start time property of [Appointment].
-  DateTime from;
-
-  /// To which is equivalent to end time property of [Appointment].
-  DateTime to;
-
-  /// Background which is equivalent to color property of [Appointment].
-  Color background;
-
-  /// IsAllDay which is equivalent to isAllDay property of [Appointment].
-  bool isAllDay;
+  final String eventName;
+  final DateTime from;
+  final DateTime to;
+  final Color background;
+  final bool isAllDay;
 }
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key, required this.title});
+  final String _title = 'Календарь';
 
-  final String title;
+  const CalendarPage({super.key});
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
@@ -75,63 +54,143 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   List<Meeting> _getDataSource() {
-    final List<Meeting> meetings = <Meeting>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime = DateTime(today.year, today.month, today.day, 9);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(
-      Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
-    );
-    return meetings;
+    final today = DateTime.now();
+    final startTime = DateTime(today.year, today.month, today.day, 9);
+    final endTime = startTime.add(const Duration(hours: 2));
+
+    return [
+      Meeting(
+        'Прием пациента',
+        startTime,
+        endTime,
+        const Color(0xFF8099FF),
+        false,
+      ),
+      Meeting(
+        'Консультация',
+        startTime.add(const Duration(days: 1)),
+        endTime.add(const Duration(days: 1)),
+        const Color(0xFF597AFF),
+        false,
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text(
+          widget._title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            color: Color(0xFF8099FF),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0F152F), Color(0xFF384681)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: SfCalendar(
-              view: CalendarView.month,
-              backgroundColor: Colors.transparent,
-              todayHighlightColor: const Color(0xFF8FA8FF),
-              selectionDecoration: BoxDecoration(
-                color: const Color(0x338FA8FF),
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: const Color(0x668FA8FF)),
-              ),
-              monthViewSettings: const MonthViewSettings(
-                appointmentDisplayMode:
-                MonthAppointmentDisplayMode.appointment,
-                showAgenda: true,
-                agendaItemHeight: 50,
-              ),
-              dataSource: MeetingDataSource(_getDataSource()),
-              appointmentBuilder: (context, details) {
-                final Meeting meeting = details.appointments.first;
-                return Container(
-                  decoration: BoxDecoration(
-                    color: meeting.background.withOpacity(0.25),
-                    border: Border.all(
-                        color: meeting.background.withOpacity(0.6), width: 1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  child: Text(
-                    meeting.eventName,
-                    style: TextStyle(
-                      color: meeting.background,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                ),
+                child: SfCalendar(
+                  view: CalendarView.month,
+                  todayHighlightColor: const Color(0xFF8099FF),
+                  backgroundColor: Colors.transparent,
+                  headerStyle: const CalendarHeaderStyle(
+                    textAlign: TextAlign.center,
+                    textStyle: TextStyle(
+                      color: Color(0xFF8099FF),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                );
-              },
+                  viewHeaderStyle: const ViewHeaderStyle(
+                    dayTextStyle: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  monthViewSettings: const MonthViewSettings(
+                    appointmentDisplayMode:
+                    MonthAppointmentDisplayMode.appointment,
+                    showAgenda: true,
+                    agendaViewHeight: 150,
+                    agendaItemHeight: 52,
+                    monthCellStyle: MonthCellStyle(
+                      textStyle: TextStyle(color: Colors.white),
+                      leadingDatesTextStyle:
+                      TextStyle(color: Colors.white38, fontSize: 12),
+                      trailingDatesTextStyle:
+                      TextStyle(color: Colors.white38, fontSize: 12),
+                    ),
+                  ),
+                  dataSource: MeetingDataSource(_getDataSource()),
+                  appointmentBuilder: (context, details) {
+                    final meeting = details.appointments.first as Meeting;
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeInOut,
+                      decoration: BoxDecoration(
+                        color: meeting.background.withValues(alpha: 0.3),
+                        border: Border.all(
+                          color: meeting.background.withValues(alpha: 0.8),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 4,
+                      ),
+                      child: Center(
+                        child: Text(
+                          meeting.eventName,
+                          style: TextStyle(
+                            color: meeting.background,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    );
+                  },
+                  selectionDecoration: BoxDecoration(
+                    color: const Color(0x338099FF),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0x668099FF)),
+                  ),
+                  todayTextStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
+      ),
     );
   }
 }
