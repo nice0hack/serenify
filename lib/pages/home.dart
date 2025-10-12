@@ -130,22 +130,22 @@ class _HomePageState extends StatelessWidget {
                   children: const [
                     _DoctorCard(
                       color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/spec_1.png",
+                      imagePath: "assets/tip_1.png",
                     ),
                     SizedBox(width: 16),
                     _DoctorCard(
                       color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/spec_2.png",
+                      imagePath: "assets/tip_2.png",
                     ),
                     SizedBox(width: 16),
                     _DoctorCard(
                       color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/spec_3.png",
+                      imagePath: "assets/tip_3.png",
                     ),
                     SizedBox(width: 16),
                     _DoctorCard(
                       color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/spec_4.png",
+                      imagePath: "assets/tip_4.png",
                     ),
                   ],
                 ),
@@ -216,21 +216,10 @@ class _DoctorCard extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              imagePath,
-              width: 140,
-              height: 140,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(height: 8),
-
-        ],
+      clipBehavior: Clip.antiAlias,
+      child: Image.asset(
+        imagePath,
+        fit: BoxFit.cover,
       ),
     );
   }
