@@ -96,7 +96,7 @@ class DoctorsController(BaseController[DoctorsModel, SDoctors]):
 
 
         # --- Исключения в расписании ---
-        if exceptions_schedule is not None:
+        if exceptions_schedule:
             exceptions_schedule = json.loads(exceptions_schedule)
             for entry in exceptions_schedule:
                 entry["doctor_id"] = doctor_model.id

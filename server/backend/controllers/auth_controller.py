@@ -40,7 +40,12 @@ class AuthController:
         payload = {
             "login": user.login,
             "id": user.id,
+            "role": user.role_id
         }
+        if user.role_id == 1:
+            print("CREAte add fkdfbmk")
+            payload["doctor_id"] = user.doctor_id
+            print(payload)
 
         return STokenWithRefresh(
             access_token=create_access_token(

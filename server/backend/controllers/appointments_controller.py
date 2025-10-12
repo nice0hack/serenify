@@ -92,13 +92,23 @@ class AppointmentsController(BaseController[AppointmentsModel, SAppointments]):
         return {"success": True, "msg": "Appointment completed"}
     
     async def get_appointments_for_user(self, user: SUserTokenPayload) -> list[SAppointmentsInDB]:
-        stmt = (
+        if user.role ==1:
+            stmt = (
+            select(AppointmentsModel)
+            .where(AppointmentsModel.doctor_id == user.doctor_id)
+            .options(
+                selectinload(AppointmentsModel.doctors).selectinload(DoctorsModel.images).selectinload(FileLinkModel.image)
+                )
+            )
+        else:
+            stmt = (
             select(AppointmentsModel)
             .where(AppointmentsModel.user_id == user.id)
             .options(
                 selectinload(AppointmentsModel.doctors).selectinload(DoctorsModel.images).selectinload(FileLinkModel.image)
             )
         )
+            
         result = await self.session.execute(stmt)
         appointments = result.scalars().all()
 
