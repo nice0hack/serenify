@@ -219,7 +219,7 @@ class _DoctorCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Image.asset(
         imagePath,
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
       ),
     );
   }
