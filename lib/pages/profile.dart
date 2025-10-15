@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../secure_storage.dart';
+
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  final VoidCallback updateAuth;
+
+  const ProfilePage({super.key, required this.updateAuth});
+
+  Future<String?> _getName() async {
+    return storage.read(key: 'name');
+  }
+
+  void _onExit() async {
+    await storage.write(key: 'access_token', value: null);
+    await storage.write(key: 'refresh_token', value: null);
+    updateAuth();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +72,18 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Гурко Илья Ильич',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
+                FutureBuilder<String?>(
+                  future: _getName(),
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data ?? 'null',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 32),
                 _ProfileInfoCard(
@@ -91,8 +110,8 @@ class ProfilePage extends StatelessWidget {
                     _ActionButton(
                       icon: Icons.logout_rounded,
                       label: 'Выйти',
-                      color: const Color(0xFF425397),
-                      onTap: () {},
+                      color: Colors.white,
+                      onTap: _onExit,
                     ),
                   ],
                 ),
@@ -123,7 +142,7 @@ class _ProfileInfoCard extends StatelessWidget {
       curve: Curves.easeInOut,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.08),
+        color: Colors.white.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.white.withOpacity(0.15)),
       ),
@@ -183,9 +202,9 @@ class _ActionButton extends StatelessWidget {
         curve: Curves.easeOutCubic,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.15),
+          color: color.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Row(
           children: [

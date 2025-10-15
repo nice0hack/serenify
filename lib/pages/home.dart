@@ -1,20 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+import '../secure_storage.dart';
+
+class _DoctorCard extends StatelessWidget {
+  final Color color;
+  final String imagePath;
+
+  const _DoctorCard({required this.color, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const _HomePageState(),
+    return Container(
+      width: 150,
+      height: 150,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Image.asset(imagePath, fit: BoxFit.fill),
     );
   }
 }
 
-class _HomePageState extends StatelessWidget {
-  const _HomePageState({super.key});
+class TipItem {
+  final String imagePath;
+  final Color? backgroundColor;
+  final String? title;
+
+  const TipItem({required this.imagePath, this.backgroundColor, this.title});
+}
+
+class TipCard extends StatelessWidget {
+  final TipItem tip;
+
+  const TipCard({super.key, required this.tip});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 260,
+      decoration: BoxDecoration(
+        color: tip.backgroundColor ?? Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.asset(
+          tip.imagePath,
+          fit: BoxFit.fill,
+          alignment: Alignment.topLeft,
+        ),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final List<TipItem> tips = const [
+    TipItem(imagePath: "assets/tip_1.png"),
+    TipItem(imagePath: "assets/tip_2.png"),
+    TipItem(imagePath: "assets/tip_3.png"),
+    TipItem(imagePath: "assets/tip_4.png"),
+  ];
+
+  Future<String?> _getName() async {
+    return storage.read(key: 'name');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +101,18 @@ class _HomePageState extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Привет, Илья!",
-                      style: TextStyle(
-                        color: Color(0xFFBFD9FF),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    FutureBuilder<String?>(
+                      future: _getName(),
+                      builder: (context, snapshot) {
+                        return Text(
+                          "Привет, ${snapshot.data}!",
+                          style: TextStyle(
+                            color: Color(0xFFBFD9FF),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        );
+                      },
                     ),
                     IconButton(
                       icon: const Icon(
@@ -51,7 +124,6 @@ class _HomePageState extends StatelessWidget {
                   ],
                 ),
               ),
-
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -121,33 +193,16 @@ class _HomePageState extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(
                 height: 160,
-                child: ListView(
+                child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  children: const [
-                    _DoctorCard(
-                      color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/tip_1.png",
-                    ),
-                    SizedBox(width: 16),
-                    _DoctorCard(
-                      color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/tip_2.png",
-                    ),
-                    SizedBox(width: 16),
-                    _DoctorCard(
-                      color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/tip_3.png",
-                    ),
-                    SizedBox(width: 16),
-                    _DoctorCard(
-                      color: Color.fromARGB(0, 0, 0, 0),
-                      imagePath: "assets/tip_4.png",
-                    ),
-                  ],
+                  itemCount: tips.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: 16),
+                  itemBuilder: (context, index) {
+                    return TipCard(tip: tips[index]);
+                  },
                 ),
               ),
               const Padding(
@@ -192,34 +247,6 @@ class _HomePageState extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _DoctorCard extends StatelessWidget {
-  final Color color;
-  final String imagePath;
-
-
-  const _DoctorCard({
-    required this.color,
-    required this.imagePath,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Image.asset(
-        imagePath,
-        fit: BoxFit.fill,
       ),
     );
   }

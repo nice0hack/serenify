@@ -28,26 +28,26 @@ class SerenifyNavigation extends StatefulWidget {
 }
 
 class _SerenifyNavigationState extends State<SerenifyNavigation> {
-  final List<Widget> _pages = [
-    HomePage(),
-    SearchPage(),
-    CalendarPage(),
-    ProfilePage(),
-  ];
-
-  int _selectedIndex = 0;
-
   late Future<bool> _isAuth;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  int _selectedIndex = 0;
 
   void updateAuth() {
     setState(() {
       _isAuth = isAuth();
+      _selectedIndex = 0;
+    });
+  }
+
+  late final List<Widget> _pages = [
+    HomePage(),
+    SearchPage(),
+    CalendarPage(),
+    ProfilePage(updateAuth: updateAuth),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
     });
   }
 

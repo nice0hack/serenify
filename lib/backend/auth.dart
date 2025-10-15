@@ -14,6 +14,8 @@ Future<bool> isAuth() async {
   );
 
   if (res.statusCode == 200) {
+    final data = jsonDecode(res.body);
+    await storage.write(key: 'name', value: data['name']);
     return true;
   } else {
     return false;
@@ -40,7 +42,13 @@ Future<String> register(
     final data = jsonDecode(res.body);
     await storage.write(key: 'access_token', value: data['access_token']);
     await storage.write(key: 'refresh_token', value: data['refresh_token']);
-    return 'ok';
+
+    if (await isAuth()) {
+      return 'ok';
+    }
+    else {
+      return 'Ошибка регистрации';
+    }
   }
   else if (res.statusCode == 422) {
     return 'Неправильный формат почты';
@@ -60,7 +68,13 @@ Future<String> login(String login, String password) async {
     final data = jsonDecode(res.body);
     await storage.write(key: 'access_token', value: data['access_token']);
     await storage.write(key: 'refresh_token', value: data['refresh_token']);
-    return 'ok';
+
+    if (await isAuth()) {
+      return 'ok';
+    }
+    else {
+      return 'Ошибка регистрации';
+    }
   } else {
     return jsonDecode(res.body)['detail'];
   }
